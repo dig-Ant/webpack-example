@@ -1,5 +1,5 @@
 import "./less/index.less";
-
+// import '../src/less/index.less'
 // console.log("$--", $);
 // console.log("$--window", window.$);
 window.onload = function () {

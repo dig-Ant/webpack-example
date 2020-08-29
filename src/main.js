@@ -5,6 +5,10 @@ import str from "./index1";
 import "./css/index.css";
 import "./css/b.css";
 import "./less/index.less";
+// import '../src-other/less/index.less'
+// mini-css-extract-plugin chunkFilename 
+// import('../src-other/less/index.less'); 
+
 
 // console.log("$--", $); //配置webpack.ProvidePlugin 在每个模块头部引入
 // console.log("$--window", window.$); // 配置expose-loader 需要在页面引入一次

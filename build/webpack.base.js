@@ -73,7 +73,9 @@ module.exports = {
 		}),
 		// 使用MiniCssExtractPlugin提取独立css文件  (如果不使用插件 默认会打包到页面style标签中 内联样式)
 		new MiniCssExtractPlugin({
-			filename: "[name].css", //name 和输出文件的name一致
+			// filename: "[name].css", //name 和输出文件的name一致  home/[name].[contenthash].css 表示前面加文件夹
+			filename: "[name].[contenthash].css", //name 和输出文件的name一致  home/[name].[contenthash].css 表示前面加文件夹
+			chunkFilename: "[id].css"
 		}),
 	],
 	module: {
