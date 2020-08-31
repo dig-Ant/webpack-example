@@ -75,7 +75,7 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			// filename: "[name].css", //name 和输出文件的name一致  home/[name].[contenthash].css 表示前面加文件夹
 			filename: "[name].[contenthash].css", //name 和输出文件的name一致  home/[name].[contenthash].css 表示前面加文件夹
-			chunkFilename: "[id].css"
+			chunkFilename: "[id].css",
 		}),
 	],
 	module: {
@@ -83,12 +83,17 @@ module.exports = {
 			{
 				test: /\.css$/,
 				// use: ["style-loader", "css-loader"],
-				use: [MiniCssExtractPlugin.loader, "css-loader"],// 使用MiniCssExtractPlugin提取独立css文件
+				use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"], // 使用MiniCssExtractPlugin提取独立css文件
 			},
 			{
 				test: /\.less$/,
 				// use: ["style-loader", "css-loader", "less-loader"],
-				use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
+				use: [
+					MiniCssExtractPlugin.loader,
+					"css-loader",
+					"postcss-loader",
+					"less-loader",
+				],
 			},
 			{
 				test: /\.(jpg|png|gif|jpeg)$/,

@@ -23,6 +23,7 @@
 		"@babel/plugin-transform-async-to-generator": "^7.10.4",
 		"@babel/plugin-transform-runtime": "^7.11.0",
 		"@babel/preset-env": "^7.11.0",
+		"autoprefixer": "^9.8.6",
 		"babel-loader": "^8.1.0",
 		"babel-plugin-transform-runtime": "^6.23.0",
 		"clean-webpack-plugin": "2.0.2",
@@ -37,6 +38,7 @@
 		"less": "^3.12.2",
 		"less-loader": "^6.2.0",
 		"mini-css-extract-plugin": "^0.11.0",
+		"postcss-loader": "^3.0.0",
 		"style-loader": "^1.2.1",
 		"url-loader": "^4.1.0",
 		"webpack": "4.42.0",
@@ -51,5 +53,10 @@
 		"axios": "^0.20.0",
 		"jquery": "^3.5.1",
 		"lodash": "^4.17.20"
-	}
+	},
+	"browserslist": [
+		"defaults",
+		"> 1%",
+		"last 2 versions"
+	]
 }
