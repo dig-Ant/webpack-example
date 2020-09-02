@@ -155,4 +155,13 @@ module.exports = {
 			// },
 		],
 	},
+
+	// code splitting
+	// 都引入相同文件时会重复打包 比如jquery 会在两个boundle中都把jquery打包进去
+	// 多入口单入口都会抽取(看配置)
+	optimization: {
+		splitChunks: {
+			chunks: 'all'
+		}
+	}
 };

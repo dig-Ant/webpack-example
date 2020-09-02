@@ -6,8 +6,8 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "NODE_ENV=production webpack --config ./build/webpack.prod.js",
-		"build1": "NODE_ENV=production webpack",
-		"build:uat": "webpack --config webpack.custom.config.js",
+		"build:dev": "NODE_ENV=production webpack --config ./build/webpack.dev.js",
+		"build:uat": "webpack --config ./build/webpack.prod.js",
 		"watch": "webpack --watch",
 		"dev": "webpack-dev-server --config ./build/webpack.dev.js",
 		"dev1": "webpack-dev-server --contentBase src --open --port 5000 --hot --compress",

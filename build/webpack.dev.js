@@ -12,8 +12,8 @@ const baseConfig = require("./webpack.base");
 // 生产环境
 //  - ?entry - ?output - mode - devtool
 module.exports = merge(baseConfig, {
-	mode: "production",
-	// mode: "development",
+	// mode: "production",
+	mode: "development",
 	devServer: {
 		open: true,
 		port: 3001,
