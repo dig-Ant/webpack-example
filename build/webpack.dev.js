@@ -18,8 +18,10 @@ module.exports = merge(baseConfig, {
 		open: true,
 		port: 3001,
 		hot: true,
+		host: "0.0.0.0", // 配置了才可以访问本机ip
 		compress: true, // 开启压缩gzip压缩
-		// contentBase: "./src", // 服务器打开的初始目录
+		// contentBase: "./src", // 服务器打开的初始目录 在给定目录提供服务器
+		// publicPath: '/', // 值一般和output中的publicPath相同 提供内存中资源的基础路径
 		proxy: {
 			// headers: { // 没生效 (项目里的配置)
 			// 	"Access-Control-Allow-Origin": "*",
@@ -31,8 +33,8 @@ module.exports = merge(baseConfig, {
 				// 改变路由去掉/api /api/getUserInfo  => http://localhost:9999/getUserInfo
 				target: "http://localhost:9999",
 				pathRewrite: {
-					'^/api': ''
-				}
+					"^/api": "",
+				},
 			},
 		},
 	},

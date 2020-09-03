@@ -19,7 +19,7 @@ const webpack = require("webpack");
 module.exports = {
 	entry: {
 		index: [
-			// "@babel/polyfill",
+			// "@babel/polyfill",// 可以兼容ie
 			"./src/main.js",
 		],
 		other: "./src-other/other.js",
@@ -29,11 +29,17 @@ module.exports = {
 		path: path.resolve("./dist"),
 		// path.join 拼接相对路径为绝对路径
 		// path: path.join(__dirname, "../","./dist"), // 相对当前路径 如果配置放到build文件下 dist就会打包到build配置文件下(resolve不会)
-		filename: "[name].[hash:4].js",
-		// filename: "[name].[chunkhash].js",
 		// 热更新(HMR)不能和[chunkhash]同时使用。
+		filename: "[name].[hash:4].js",
 		chunkFilename: "[name].[hash:2].js", //指未被列在 entry 中，却又需要被打包出来的 chunk 文件的名称。一般来说，这个 chunk 文件指的就是要懒加载的代码。
+		// filename: "[name].[contenthash].js",
+		// chunkFilename: "[name].[contenthash].js",
 		publicPath: "/", // 作用在每个路由之前
+
+		// TODO hash chunkhash contenthash  (filename 和chunkFilename 使用的hash必须一致?)
+		// hash 计算与整个项目的构建相关；
+		// chunkhash 计算与同一 chunk 内容相关；同一个chunk打包出来的boundle用同一个chunkhash 变动一个文件 其他同同一个chunkhash的文件也会变动
+		// contenthash 计算与文件内容本身相关。
 	},
 	// watch: true,
 	plugins: [
@@ -159,9 +165,10 @@ module.exports = {
 	// code splitting
 	// 都引入相同文件时会重复打包 比如jquery 会在两个boundle中都把jquery打包进去
 	// 多入口单入口都会抽取(看配置)
+	// js并行请求 减少首屏渲染时间
 	optimization: {
 		splitChunks: {
-			chunks: 'all'
-		}
-	}
+			chunks: "all",
+		},
+	},
 };

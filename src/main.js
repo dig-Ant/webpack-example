@@ -75,7 +75,7 @@ function test1() {
 		});
 	});
 }
-// test()
+// test1()
 
 // TODO 插件 webpack.DefindPlugin 添加环境变量 测试请求api
 // import { getUserInfo } from "./api/http";
@@ -115,18 +115,21 @@ function test2() {
 // 原理: 分析出模块之间的依赖关系, 尽可能的把大蒜的木块合并到一个函数中去,但前提是不能造成代码冗余.因此只有被引用了一次的模块才能被合并.
 
 // const math = require('./math'); // 不会进行 tree shaking
-import { add, minus } from "./utils/math";
+// 静态导入再动态导入 不会独立chunk
+// import { add, minus } from "./utils/math";
+// console.log('add 静态导入11', add(1,2));
 async function treeShaking() {
-	// const a = 1 + 1 + 1;
-	// const b = 1 + 1 + 0;
+	const a = 1 + 1 + 1;
+	const b = 1 + 1 + 0;
 
-	console.log('add--',add(1,2)); // 打包时只会把add打包进去 minus没有使用不会打包进boundle
+	// console.log('add--',add(1,2)); // 打包时只会把add打包进去 minus没有使用不会打包进boundle
 	// 上面的add只使用了一次 所以会被直接打包到一个函数中
 	
 	// 动态引入会生成独立的chunk 包含完整的代码没有办法tree shaking
-	// const math = await import(/* webpackChunkName: "math" */ /* webpackPreFetch: true */'./math');
-	// console.log("add-", math.add(a, b));
-	// console.log("add-", math.add(a, a));
+	// 就算方法没有被使用 import引入的代码chunk也会被打包 但是方法没有被打包
+	const math = await import(/* webpackChunkName: "math1" */ /* webpackPreFetch: true */'./utils/math');
+	console.log("add-11", math.add(a, b));
+	console.log("add-", math.add(a, a));
 }
-// treeShaking();
+treeShaking();
  

@@ -6,8 +6,8 @@ const baseConfig = require("./webpack.base");
 
 module.exports = merge(baseConfig, {
 	mode: "production",
-	// devtool: "source-map",
-	devtool: "cheap-module-source-map",
+	devtool: "source-map", // 生产可用
+	// devtool: "cheap-module-source-map", // 生产可用
 	// devtool: "eval-cheap-module-source-map",
 	// devtool: 'cheap-module-source-map'
 
