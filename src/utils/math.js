@@ -1,7 +1,7 @@
 // TODO tree shaking 没有引用的就不会被打包
-
+import s from 'lodash';
 export const add = (a, b) => {
-	console.log("我是add");
+	console.log("我是add",s, minus);
 	return a + b;
 };
 

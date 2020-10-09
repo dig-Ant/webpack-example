@@ -6,7 +6,20 @@ import "./less/index.less";
 // 需要在optimization中 splitChunks {chunks: 'all'}
 console.log("$--", $);
 // console.log("$--window", window.$);
+
+// import { add, minus } from "../src/utils/math";
+// console.log('add---',add);
+
 window.onload = function () {
+	console.log('other onload11');
 	document.querySelector("h1").style.color = "red";
 	$("body img").css("height", "100").css("width", "100");
 };
+// import lodash from 'lodash';
+async function a() {
+	// const { default: _ } = await import(
+	// 	/* webpackChunkName: "lodash" */ /* webpackPrefetch: true */ "lodash"
+	// );
+		// console.log('lodash',lodash)
+}
+// a();
