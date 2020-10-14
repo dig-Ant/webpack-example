@@ -1,6 +1,7 @@
 // export default "我是index1133";
+// import $ from "jquery"; // node_modules/jquery/package.json > main
 
-// import { add, minus } from "./math";
+// import { add, minus } from "./utils/math";
 // async function treeShaking() {
 // 	const a = 1 + 1 + 1;
 // 	const b = 1 + 1 + 0;
@@ -18,7 +19,11 @@
 // 	// console.log("add-", math.add(a, a));
 // }
 // treeShaking();
-
+// $("body").css("backgroundColor", "red");
+const b = () => {
+	console.log('1111111sdlkajaflkdjsflasjdf大事发生大1111111sdlkajaflkdjsflasjdf大事发生大1111111sdlkajaflkdjsflasjdf大事发生大1111111sdlkajaflkdjsflasjdf大事发生大1111111sdlkajaflkdjsflassjdf大事发生大1111111sdlkajaflskdjsflasjdf大事发生大1111111sdlkajaflkdjsflasjdf大事发生大1111111sdlkajaflkdjsflassjdf大事发生大1111111sdlkasjaflkdjsflasjdf大事发生大1111111sdlkajaflkdjsflasjdf大事发生大1111111sdlkajaflkdjsflasjdf大事发生大1111111sdlkajaflkdjsflasjdf大事发生大1111111sdlkajaflkdjsflasjdf大事发生大s');
+}
 export default {
 	a: 1,
+	b
 };

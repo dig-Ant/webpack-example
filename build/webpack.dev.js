@@ -13,6 +13,9 @@ const baseConfig = require("./webpack.base");
 //  - ?entry - ?output - mode - devtool
 module.exports = merge(baseConfig, {
 	// mode: "production",
+	// output: {
+	// 	pathinfo: true // development 中默认是true 给打包后的boundle包中引入模块添加注释信息
+	// },
 	mode: "development",
 	devServer: {
 		open: true,

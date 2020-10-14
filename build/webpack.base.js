@@ -3,6 +3,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// 配置dll 添加dll引入到html中
+const AddAssetHtmlWebpackPlugin = require("add-asset-html-webpack-plugin");
+const manifestJson = require(path.resolve(__dirname, '../dist/lib','react-manifest.json'))
 const webpack = require("webpack");
 
 // 相对路径 都是相对项目根目录
@@ -16,13 +19,14 @@ const webpack = require("webpack");
 //  - ?entry - ?output - mode - devServer - devtool
 // 生产环境
 //  - ?entry - ?output - mode - devtool
+const BUILD_PUBLIC_PATH = '/'
 module.exports = {
 	entry: {
 		index: [
 			// "@babel/polyfill",// 可以兼容ie
 			"./src/main.js",
 		],
-		other: "./src-other/other.js",
+		// other: "./src-other/other.js",
 	},
 	output: {
 		// path.resolve  解析相对路径为绝对路径
@@ -34,7 +38,7 @@ module.exports = {
 		chunkFilename: "[name].[hash:2].js", //指未被列在 entry 中，却又需要被打包出来的 chunk 文件的名称。一般来说，这个 chunk 文件指的就是要懒加载的代码。
 		// filename: "[name].[contenthash].js",
 		// chunkFilename: "[name].[contenthash].js",
-		publicPath: "/", // 作用在每个路由之前
+		publicPath: BUILD_PUBLIC_PATH, // 作用在每个路由之前
 
 		// TODO hash chunkhash contenthash  (filename 和chunkFilename 使用的hash必须一致?)
 		// hash 计算与整个项目的构建相关；
@@ -51,20 +55,26 @@ module.exports = {
 			// filename: "index.html", // 生成文件名
 			template: "./src/index.html", // 参照的模板
 			templateParameters: {// html-loader 导致失效
-				'ddd': 'dds'
+				'ddd': 'dds',
+				dll: `${BUILD_PUBLIC_PATH}lib/${manifestJson.name}.js`
 			},
 			title: 'nihao', // html-loader 导致失效
 			chunks: ["index", "other"], // 可以控制css引入?
 			// inject: true, // true head body false true和body:所有JavaScript资源插入到body元素的底部 false不插入 head插入到head
 		}),
-		new HtmlWebpackPlugin({
-			filename: "other.html", // 生成文件名
-			template: "./src-other/other.html", // 参照的模板
-			chunks: ["other"],
-		}),
+		// new HtmlWebpackPlugin({
+		// 	filename: "other.html", // 生成文件名
+		// 	template: "./src-other/other.html", // 参照的模板
+		// 	chunks: ["other"],
+		// }),
 		// 打包删除上一次打包遗留的文件
+		// 使用dll的时候要去除dll文件 不要删
+		// new CleanWebpackPlugin({
+		// 	// cleanOnceBeforeBuildPatterns: ["*", "!img", "!assets1"],
+		// }),
 		new CleanWebpackPlugin({
-			// cleanOnceBeforeBuildPatterns: ["*", "!img", "!assets1"],
+			cleanOnceBeforeBuildPatterns: ['*',`!lib`]
+			// cleanOnceBeforeBuildPatterns: ['**/*',`!lib`, '!lib/*']
 		}),
 		// 在html文件中引入本地静态资源时, 资源不会被打包进去
 		// 使用插件copy资源目录 到打包目录中
@@ -88,6 +98,23 @@ module.exports = {
 			filename: "[name].[contenthash].css", //name 和输出文件的name一致  home/[name].[contenthash].css 表示前面加文件夹
 			chunkFilename: "[id].[contenthash].css",
 		}),
+
+		new webpack.DllReferencePlugin({
+			// 两种方式在html中引入dll文件
+			// TODO: 第一种 如果名称带hash 就直接加载json 取name值
+			// 在html-webpack-plugin中申明变量 在html模板中引入dll
+			// name: 'react_dll', // 保持name与output.library 一致。
+			// manifest: manifestJson
+
+			// TODO: 第二种 如果名称不带hash manifest直接引入绝对路径不需要直接引入json文件
+			// 通过插件 add-asset-html-webpack-plugin 动态引入
+			name: 'react_dll', // 保持name与output.library 一致。
+			manifest: path.resolve(__dirname, '../dist/lib','react-manifest.json')
+		}),
+		// 必须在htmlwebpackplugin之后引入
+		new AddAssetHtmlWebpackPlugin({
+			filepath: path.resolve(__dirname, '../dist/lib/react_dll.js')
+		})
 	],
 	module: {
 		rules: [
@@ -173,12 +200,29 @@ module.exports = {
 	// js并行请求 减少首屏渲染时间
 	optimization: {
 		splitChunks: {
-			chunks: "all",
-
+			chunks: "all", // 动态引入的文件里的 静态引入资源也会被抽离
+			// chunks: 'initial', // 动态引入的文件里的 静态引入资源不会被抽离
+			maxAsyncRequests: 5, // 默认 5 按需引入的包中并行请求的最大数量。超出数量直接不拆分包 如果为1 例子中动态引入的math.js不会把lodash单独抽出
+			// 理解? 当整个项目打包完之后，一个按需加载的包最终被拆分成 n 个包，maxAsyncRequests 就是用来限制 n 的最大值
+			// maxInitialRequests: 3, // 默认 3 页面初始化同时发送的请求数量最大不能超过3 超出不拆分chunk 超出的不拆分
 			// chunks: 'async' // 默认async 只对异步加载的模块进行拆分 还有all和initial都会对静态导入复用的模块进行拆分 all initial区别?
-			minSize: 30000, // 模块最少大于30kb才会拆分
-			// maxSize: 0, // 如果超出了maxSize 才会进一步才分 (一般不写)
-			minChunks: 1, // 模块最少引用1次才会被拆分
+			minSize: 20000, // 模块最少大于30kb才会拆分
+			maxSize: 0, // 如果超出了maxSize 才会进一步才分 (一般不写)
+			minChunks: 1, // 模块最少引用1次才会被拆分  不同chunks引用同一个?
+			automaticNameDelimiter: '~', // 默认的连接符
+			name: true, // 拆分的chunk名, 设为true时 表示根据模块名和cacheGroups的key来自动生成, 使用上面的连接符链接
+			cacheGroups: {  // 可以继承和覆盖splitChunks中的选项
+				// default: false,
+        vendors: { // 同一个chunk中引用的静态资源(lodash jquery)会独立到一个chunk中 异步加载模块中的资源的会产生第二个chunk
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        default: { // 
+					minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
 		},
 	},
 };

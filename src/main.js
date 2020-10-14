@@ -1,8 +1,8 @@
 // TODO 可以在入口文件引入 有点大 一般不用
 // import "@babel/polyfill";
 // import $ from "jquery"; // node_modules/jquery/package.json > main
-import s from "./index1";
-console.log('str',s);
+// import s from "./index1";
+// console.log('str',s.default);
 // import "./css/index.css";
 // import "./css/b.css";
 // import "./less/index.less";
@@ -10,9 +10,10 @@ console.log('str',s);
 // mini-css-extract-plugin chunkFilename
 // import('../src-other/less/index.less');
 
+
 // console.log("$--", $); //配置webpack.ProvidePlugin 在每个模块头部引入
 // console.log("$--window", window.$); // 配置expose-loader 需要在页面引入一次
-// $("body").css("backgroundColor", "green");
+$("body").css("backgroundColor", "green");
 
 // TODO 以下代码会被babel编辑
 // function test() {
@@ -75,7 +76,7 @@ function test1() {
 
 // TODO 插件 webpack.DefindPlugin 添加环境变量 测试请求api
 // import { getUserInfo } from "./api/http";
-// console.log('IS_DEV',typeof IS_DEV,typeof test,typeof test1); // boolean number string
+// console.log('IS_DEV',IS_DEV,sss,typeof IS_DEV,typeof test,typeof test1); // boolean number string
 // console.log('----process',process.env.NODE_ENV);
 // getUserInfo()
 // 	.then(() => {})
@@ -104,31 +105,56 @@ function test1() {
 
 // TODO mode: production 模式下自带使用了 1.tree shaking 2. scope hoisting(webpack.optimize.ModuleConcatenationPlugin()插件) 3. uglifyJsPlugin插件进行混淆压缩
 // TODO tree shaking优化
-// 通常用于打包的时候移除javascript汇总的未引用的代码(dead-code), 它依赖于ex6模块系统中的 import 和 export 的静态结构特性.
+// 通常用于打包的时候移除javascript汇总的未引用的代码(dead-code), 它依赖于es6模块系统中的 import 和 export 的静态结构特性.
 // 开发时引入一个模块后, 如果只使用其中的一个功能, 上线打包时只会把用到的功能打包进boundle,其他没有用到的功能都不会打包进来
 // TODO scope hoisting
-// 将模块之间的关系进行结果推测, 可以让打包出来的文件更小,运行更快  也依赖ex6模块系统中的 import 和 export 的静态结构特性.
+// 将模块之间的关系进行结果推测, 可以让打包出来的文件更小,运行更快  也依赖es6模块系统中的 import 和 export 的静态结构特性.
 // 原理: 分析出模块之间的依赖关系, 尽可能的把打散的模块合并到一个函数中去,但前提是不能造成代码冗余.因此只有被引用了一次的模块才能被合并.
 
 // const math = require('./math'); // 不会进行 tree shaking
 // 静态导入再动态导入 不会独立chunk
 // import { add, minus } from "./utils/math";
 // console.log('add 静态导入11', add(1,2));
-async function treeShaking() {
-	const a = 1 + 1 + 1;
-	const b = 1 + 1 + 0;
+// async function treeShaking() {
+// 	const a = 1 + 1 + 1;
+// 	const b = 1 + 1 + 0;
 
-	// console.log('add--',add(1,2)); // 打包时只会把add打包进去 minus没有使用不会打包进boundle
-	// 上面的add只使用了一次 所以会被直接打包到一个函数中
+// 	// console.log('add--',add(1,2)); // 打包时只会把add打包进去 minus没有使用不会打包进boundle
+// 	// 上面的add只使用了一次 所以会被直接打包到一个函数中
 
-	// 动态引入会生成独立的chunk 包含完整的代码没有办法tree shaking
-	// 就算方法没有被使用 import引入的代码chunk也会被打包 但是方法没有被打包
-	const math = await import(
-		/* webpackChunkName: "math1" */ /* webpackPreFetch: true */ "./utils/math"
-	);
-	console.log("add-11", math.add(a, b));
-	console.log("add-", math.add(a, a));
-}
+// 	// 动态引入会生成独立的chunk 包含完整的代码没有办法tree shaking
+// 	// 就算方法没有被使用 import引入的代码chunk也会被打包 但是方法没有被打包
+// 	const math = await import(
+// 		/* webpackChunkName: "math0" */ /* webpackPreFetch: true */ "./utils/math"
+// 	);
+// 	// import(
+// 	// 	/* webpackChunkName: "math1" */ /* webpackPreFetch: true */ "./utils/math1"
+// 	// );
+// 	// import(
+// 	// 	/* webpackChunkName: "math2" */ /* webpackPreFetch: true */ "./utils/math2"
+// 	// );
+// 	// import(
+// 	// 	/* webpackChunkName: "math3" */ /* webpackPreFetch: true */ "./utils/math3"
+// 	// );
+// 	// import(
+// 	// 	/* webpackChunkName: "math4" */ /* webpackPreFetch: true */ "./utils/math4"
+// 	// );
+// 	console.log("add-11", math.add(a, b));
+// 	console.log("add-", math.add(a, a));
+// }
 // setTimeout(() => {
-// 	treeShaking();
-// }, 5000);
+	// treeShaking();
+// }, 1000);
+
+
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+const dom = React.createElement('h1',{
+	className: 'ni',
+	style:{
+		color: 'red'
+	}
+},['hh','sss']);
+ReactDOM.render(dom, document.getElementById('app'))

@@ -4,16 +4,22 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"dev1": "webpack-dev-server --contentBase src --open --port 5000 --hot --compress",
 		"test": "echo \"Error: no test specified\" && exit 1",
+		
 		"build": "NODE_ENV=production webpack --config ./build/webpack.prod.js",
 		"build:dev": "NODE_ENV=production webpack --config ./build/webpack.dev.js",
 		"build:uat": "webpack --config ./build/webpack.prod.js",
-		"watch": "webpack --watch",
 		"dev": "webpack-dev-server --config ./build/webpack.dev.js",
-		"dev1": "webpack-dev-server --contentBase src --open --port 5000 --hot --compress",
+		"dll:dev": "webpack --config ./build/webpack.react.dll.js --mode development",
+		"dll": "webpack --config ./build/webpack.react.dll.js --mode production",
+		"fat": "npm run dll && npm run build:dev",
+		"uat": "npm run dll && npm run build:uat",
+		"pro": "npm run dll && npm run build:uat",
+		
 		"middle": "node server.js",
-		"dist:dev": "live-server ./dist",
-		"analyzer": "webpack --config ./build/webpack.analyzer.js"
+		"analyzer": "webpack --config ./build/webpack.analyzer.js",
+		"dist:dev": "live-server ./dist"
 	},
 	"keywords": [],
 	"author": "",
@@ -25,6 +31,7 @@
 		"@babel/plugin-transform-async-to-generator": "^7.10.4",
 		"@babel/plugin-transform-runtime": "^7.11.0",
 		"@babel/preset-env": "^7.11.0",
+		"add-asset-html-webpack-plugin": "^3.1.3",
 		"autoprefixer": "^9.8.6",
 		"babel-loader": "^8.1.0",
 		"babel-plugin-transform-runtime": "^6.23.0",
@@ -58,6 +65,9 @@
 		"axios": "^0.20.0",
 		"jquery": "^3.5.1",
 		"lodash": "^4.17.20",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"react-router-dom": "^5.2.0"
 	},
 	"browserslist": [
 		"defaults",
